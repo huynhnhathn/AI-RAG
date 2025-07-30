@@ -3,13 +3,13 @@ Retrieval Chain Implementation
 """
 import os
 from typing import List, Dict, Any, Optional
-from langchain.schema import Document
-from langchain.retrievers import VectorStoreRetriever
+from langchain_core.documents import Document
+from langchain_core.vectorstores import VectorStore
 from langchain.retrievers.multi_query import MultiQueryRetriever
 from langchain.retrievers.contextual_compression import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import LLMChainExtractor
 from langchain_openai import ChatOpenAI
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain.memory import ConversationBufferMemory
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
@@ -69,11 +69,10 @@ class AIRetriever:
             output_key="answer"
         )
     
-    def _create_base_retriever(self) -> VectorStoreRetriever:
+    def _create_base_retriever(self):
         """Create the base vector store retriever."""
         langchain_vector_store = self.vector_store.get_vector_store()
-        return VectorStoreRetriever(
-            vectorstore=langchain_vector_store,
+        return langchain_vector_store.as_retriever(
             search_kwargs={"k": self.top_k}
         )
     
@@ -247,7 +246,8 @@ class AIRetriever:
         """
         if 'top_k' in kwargs:
             self.top_k = kwargs['top_k']
-            self.base_retriever.search_kwargs = {"k": self.top_k}
+            # Recreate the base retriever with new top_k
+            self.base_retriever = self._create_base_retriever()
         
         if 'temperature' in kwargs:
             self.temperature = kwargs['temperature']

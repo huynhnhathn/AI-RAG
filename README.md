@@ -56,6 +56,11 @@ A powerful AI assistant built with LangChain that retrieves context from a Qdran
    ```bash
    pip install -r requirements.txt
    ```
+   
+   **Note**: If you encounter any import errors, you can test the installation by running:
+   ```bash
+   python test_imports.py
+   ```
 
 3. **Set up environment variables**:
    ```bash

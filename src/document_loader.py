@@ -4,8 +4,8 @@ Document Loading and Processing Module
 import os
 from typing import List, Optional, Union
 from pathlib import Path
-from langchain.schema import Document
-from langchain.text_splitter import RecursiveCharacterTextSplitter, TokenTextSplitter
+from langchain_core.documents import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter, TokenTextSplitter
 from langchain_community.document_loaders import (
     TextLoader,
     PyPDFLoader,

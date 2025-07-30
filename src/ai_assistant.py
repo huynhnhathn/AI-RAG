@@ -4,7 +4,7 @@ Main AI Assistant Class
 import os
 from typing import List, Dict, Any, Optional, Union
 from dotenv import load_dotenv
-from langchain.schema import Document
+from langchain_core.documents import Document
 
 from .vector_store import QdrantVectorStore
 from .document_loader import DocumentProcessor
@@ -386,7 +386,7 @@ class AIAssistant:
         
         # Reinitialize text splitter if chunk parameters changed
         if 'chunk_size' in kwargs or 'chunk_overlap' in kwargs:
-            from langchain.text_splitter import RecursiveCharacterTextSplitter
+            from langchain_text_splitters import RecursiveCharacterTextSplitter
             self.document_processor.text_splitter = RecursiveCharacterTextSplitter(
                 chunk_size=self.document_processor.chunk_size,
                 chunk_overlap=self.document_processor.chunk_overlap,
